@@ -5,14 +5,39 @@
       <div class="col-md-6 col-md-offset-3 col-xs-12">
         <h1 class="text-xs-center">Sign in</h1>
 
-        <form (ngSubmit)="login()">
+        <form #tForm="ngForm" (ngSubmit)="login()">
           <fieldset class="form-group">
-            <input name="email" [(ngModel)]="loginInfo.email" class="form-control form-control-lg" type="text" placeholder="Email">
+            <input name="email" email required #tEmail="ngModel" [(ngModel)]="loginInfo.email" class="form-control form-control-lg" type="text" placeholder="Email">
           </fieldset>
+          <div *ngIf="tEmail.invalid">
+
+            <div *ngIf="tEmail.errors.required">
+              請輸入 Email
+            </div>
+
+            <div *ngIf="tEmail.errors.email">
+              Email 格式不正確
+            </div>
+
+          </div>
+
           <fieldset class="form-group">
-            <input name="password" [(ngModel)]="loginInfo.password" class="form-control form-control-lg" type="password" placeholder="Password">
+            <input name="password" required minlength="4" #tPassword="ngModel" [(ngModel)]="loginInfo.password" class="form-control form-control-lg" type="password" placeholder="Password">
           </fieldset>
-          <button class="btn btn-lg btn-primary pull-xs-right">
+
+          <div *ngIf="tPassword.invalid">
+
+            <div *ngIf="tPassword.errors.required">
+              請輸入密碼
+            </div>
+
+            <div *ngIf="tPassword.errors.minlength">
+              密碼長度不足
+            </div>
+
+          </div>
+
+          <button class="btn btn-lg btn-primary pull-xs-right" [disabled]="tForm.invalid">
             Sign in
           </button>
         </form>
