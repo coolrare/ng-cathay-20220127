@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormArray, FormBuilder } from '@angular/forms';
+import { FormArray, FormBuilder, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-create',
@@ -8,9 +8,9 @@ import { FormArray, FormBuilder } from '@angular/forms';
 })
 export class CreateComponent implements OnInit {
   form = this.formBuilder.group({
-    title: this.formBuilder.control(''),
+    title: this.formBuilder.control('', Validators.required),
     description: this.formBuilder.control('desc'),
-    body: this.formBuilder.control(''),
+    body: this.formBuilder.control('', [Validators.required, Validators.minLength(10)]),
     tags: this.formBuilder.array([
       this.formBuilder.control('HTML'),
       this.formBuilder.control('CSS'),

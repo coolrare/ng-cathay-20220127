@@ -11,6 +11,11 @@
               formControlName="title"
             />
           </fieldset>
+          <div *ngIf="form.get('title').invalid">
+            <div *ngIf="form.get('title').errors.required">
+              請輸入標題
+            </div>
+          </div>
           <fieldset class="form-group">
             <textarea
               class="form-control"
@@ -27,6 +32,14 @@
               formControlName="body"
             ></textarea>
           </fieldset>
+          <div *ngIf="form.get('body').invalid">
+            <div *ngIf="form.get('body').errors.required">
+              請輸入內文
+            </div>
+            <div *ngIf="form.get('body').errors.minlength">
+              長度不足({{ form.get('body').errors.minlength.actualLength }}/{{ form.get('body').errors.minlength.requiredLength }})
+            </div>
+          </div>
           <fieldset class="form-group" formArrayName="tags">
             <input class="form-control" type="text" placeholder="Enter tags" (keyup.enter)="addTag($event.target.value)" />
             <div class="tag-list">
@@ -35,7 +48,7 @@
             </div>
             <input class="form-control" type="text" placeholder="Enter tags" [formControlName]="index" *ngFor="let control of tags.controls; let index=index"/>
           </fieldset>
-          <button type="button" class="btn btn-lg btn-primary pull-xs-right" (click)="createPost()">
+          <button type="button" class="btn btn-lg btn-primary pull-xs-right" (click)="createPost()" [disabled]="form.invalid">
             Create Post
           </button>
         </form>
