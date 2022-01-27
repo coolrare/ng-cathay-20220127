@@ -40,7 +40,7 @@
               長度不足({{ form.get('body').errors.minlength.actualLength }}/{{ form.get('body').errors.minlength.requiredLength }})
             </div>
           </div>
-          <fieldset class="form-group" formArrayName="tags">
+          <fieldset class="form-group" formArrayName="tagList">
             <input class="form-control" type="text" placeholder="Enter tags" (keyup.enter)="addTag($event.target.value)" />
             <div class="tag-list">
               <span class="label label-pill label-default" *ngFor="let control of tags.controls; let index = index">

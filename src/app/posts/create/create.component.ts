@@ -1,3 +1,5 @@
+import { Router } from '@angular/router';
+import { PostService } from './../../post.service';
 import { Component, OnInit } from '@angular/core';
 import { FormArray, FormBuilder, Validators } from '@angular/forms';
 
@@ -10,8 +12,11 @@ export class CreateComponent implements OnInit {
   form = this.formBuilder.group({
     title: this.formBuilder.control('', Validators.required),
     description: this.formBuilder.control('desc'),
-    body: this.formBuilder.control('', [Validators.required, Validators.minLength(10)]),
-    tags: this.formBuilder.array([
+    body: this.formBuilder.control('', [
+      Validators.required,
+      Validators.minLength(10),
+    ]),
+    tagList: this.formBuilder.array([
       this.formBuilder.control('HTML'),
       this.formBuilder.control('CSS'),
       this.formBuilder.control('JavaScript'),
@@ -19,10 +24,14 @@ export class CreateComponent implements OnInit {
   });
 
   get tags() {
-    return this.form.get('tags') as FormArray;
+    return this.form.get('tagList') as FormArray;
   }
 
-  constructor(private formBuilder: FormBuilder) {}
+  constructor(
+    private formBuilder: FormBuilder,
+    private postService: PostService,
+    private router: Router
+  ) {}
 
   ngOnInit(): void {}
 
@@ -37,5 +46,13 @@ export class CreateComponent implements OnInit {
 
   createPost() {
     console.log(this.form.value);
+    this.postService.createArticle(this.form.value).subscribe({
+      next: () => {
+        this.router.navigateByUrl('/');
+      },
+      error: () => {
+        alert('新增失敗');
+      },
+    });
   }
 }
